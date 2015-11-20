@@ -285,7 +285,22 @@ on_keydown (
 {
     drawable_window::on_keydown(key, is_printable, state);
 
-    if (is_printable)
+	// added choffmann added functionality to reset zoom with ctrl+0
+	if (state&base_window::KBD_MOD_CONTROL)
+	{
+		if ('0' == key)
+		{
+			// force redraw all
+			unsigned long width, height;
+			get_size(width, height);
+			display.reset_scale();
+			//get_display_size(screen_width, screen_height);
+			rectangle rect(0, 0, width - 1, height - 1);
+			invalidate_rectangle(rect);
+			//select_image(image_pos);
+		}
+	}
+	else if (is_printable)
     {
         if (key == '\t')
         {

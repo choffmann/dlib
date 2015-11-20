@@ -3488,6 +3488,52 @@ namespace dlib
         bool overlay_editing_is_enabled (
         ) const { auto_mutex M(m); return overlay_editing_enabled; }
 
+		// added choffmann -> todo more checking
+		void reset_scale(int width = 0, int height = 0)
+		{
+			double scale;
+			if (width == 0 || height == 0)
+			{
+				zoom_in_scale = 1;
+				zoom_out_scale = 1;
+				scale = 1;
+			}
+			else
+			{
+				// is not working currently!
+				double ax = ((double)width) / img.nc();
+				double ay = ((double)height) / img.nr();
+
+				if (ax < 1 || ay < 1)
+				{
+					// image is bigger than window
+					scale = std::min(ax, ay);
+				}
+				else
+				{
+					// window is bigger or equal than window
+					scale = std::max(ax, ay);
+				}
+
+				if (scale > 1)
+				{
+					// scale up
+					zoom_in_scale = scale = std::ceil(scale);
+					zoom_out_scale = 1;
+				}
+				else
+				{
+					zoom_in_scale = 1;
+					zoom_out_scale = scale = std::ceil(1 / scale);
+				}
+
+
+				std::cout << "zoom_in_scale: " << zoom_in_scale << " zoom_out_scale: " << zoom_out_scale << std::endl;
+			}
+
+			set_total_rect_size(img.nc()*scale, img.nr()*scale);
+		}
+
     private:
 
         void draw (
