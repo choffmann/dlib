@@ -305,7 +305,8 @@ on_keydown (
         if (key == '\t')
         {
             overlay_label.give_input_focus();
-            overlay_label.select_all_text();
+			overlay_label.move_cursor(overlay_label.text().size());
+            //overlay_label.select_all_text();
         }
 
         // If the user types a number then jump to that image.

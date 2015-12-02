@@ -559,6 +559,19 @@ namespace dlib
             focus_lost_handler = event_handler;
         }
 
+		// choffmann changed: made public
+		void move_cursor(
+			unsigned long pos
+			);
+		/*!
+		requires
+		- pos <= text_.size()
+		ensures
+		- moves the cursor to the position given by pos and moves the text
+		in the text box if necessary
+		- if the position changes then the parent window will be updated
+		!*/
+
     private:
 
         void on_cut (
@@ -611,18 +624,6 @@ namespace dlib
         /*!
             ensures
                 - flips the state of cursor_visible
-        !*/
-
-        void move_cursor (
-            unsigned long pos
-        );
-        /*!
-            requires
-                - pos <= text_.size() 
-            ensures
-                - moves the cursor to the position given by pos and moves the text 
-                  in the text box if necessary
-                - if the position changes then the parent window will be updated
         !*/
 
         rectangle get_text_rect (
